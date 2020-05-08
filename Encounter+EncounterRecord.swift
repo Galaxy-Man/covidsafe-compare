@@ -1,12 +1,15 @@
 //
 //  Encounter+EncounterRecord.swift
-//  OpenTrace
+//  CovidSafe
+//
+//  Copyright © 2020 Australian Government. All rights reserved.
+//
 
 import UIKit
 import CoreData
 
 extension EncounterRecord {
-
+    
     func saveToCoreData() {
         DispatchQueue.main.async {
             guard let appDelegate =
@@ -24,5 +27,5 @@ extension EncounterRecord {
             }
         }
     }
-
+    
 }

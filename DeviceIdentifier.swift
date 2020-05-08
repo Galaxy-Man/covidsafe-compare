@@ -1,7 +1,7 @@
 import UIKit
 
 public extension UIDevice {
-
+    
     static let modelName: String = {
         var systemInfo = utsname()
         uname(&systemInfo)
@@ -10,7 +10,7 @@ public extension UIDevice {
             guard let value = element.value as? Int8, value != 0 else { return identifier }
             return identifier + String(UnicodeScalar(UInt8(value)))
         }
-
+        
         func mapToDevice(identifier: String) -> String { // swiftlint:disable:this cyclomatic_complexity
             #if os(iOS)
             switch identifier {
@@ -73,14 +73,25 @@ public extension UIDevice {
             }
             #endif
         }
-
+        
         return mapToDevice(identifier: identifier)
     }()
-
+    
 }
 
-struct DeviceInfo {
+struct DeviceIdentifier {
+    static let DEVICE_IDENTIFIER_KEY = "traceDeviceIdentifier"
+    static let RANDOM_STRING_LENGTH = 6
     static func getModel() -> String {
         return UIDevice.modelName
+    }
+    static func getID() -> String {
+        if UserDefaults.standard.string(forKey: DEVICE_IDENTIFIER_KEY) == nil {
+            let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            let randomString = String((0..<RANDOM_STRING_LENGTH).map{ _ in letters.randomElement()! })
+            let deviceIdentifier = "\(randomString) [\(UIDevice.modelName)]"
+            UserDefaults.standard.set(deviceIdentifier, forKey: DEVICE_IDENTIFIER_KEY)
+        }
+        return UserDefaults.standard.string(forKey: DEVICE_IDENTIFIER_KEY)!
     }
 }

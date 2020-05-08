@@ -1,18 +1,26 @@
 //
 //  Encounter+Event.swift
-//  OpenTrace
+//  CovidSafe
+//
+//  Copyright © 2020 Australian Government. All rights reserved.
+//
 
 import UIKit
 import CoreData
 
 extension Encounter {
 
-    enum Event: String {
+    enum Event: String, CaseIterable {
         case scanningStarted = "Scanning started"
         case scanningStopped = "Scanning stopped"
+        
+        case appStarted = "App started"
+        case appEnteredForeground = "App entered foreground"
+        case appEnteredBackground = "App entered background"
+        case appTerminating = "App about to terminate"
     }
-
-    static func saveWithCurrentTime(for event: Event) {
+    
+    static func timestamp(for event: Event) {
         DispatchQueue.main.async {
             guard let appDelegate =
                 UIApplication.shared.delegate as? AppDelegate else {
@@ -31,5 +39,5 @@ extension Encounter {
             }
         }
     }
-
+    
 }
